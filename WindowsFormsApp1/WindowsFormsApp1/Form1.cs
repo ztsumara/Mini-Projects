@@ -15,18 +15,24 @@ namespace WindowsFormsApp1
         public Form1()
         {
             InitializeComponent();
+            button1.Click += ButtonAll_Click;
+            button2.Click += ButtonAll_Click;
+            checkBox1.Click += ButtonAll_Click;
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private void ButtonAll_Click(object sender, EventArgs e)
         {
-
+            //if(sender is Control)
+            //{
+            //    MessageBox.Show(((Control)sender).Text);
+            //}
+            if(sender is Control c)
+            {
+                MessageBox.Show(c.Text);
+            }
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("You clicked the button");
-           
-            
-        }
+
+       
     }
 }
