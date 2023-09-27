@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34031.279
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cnsDrawRomb", "cnsDrawRomb\cnsDrawRomb.csproj", "{A6C6A8BE-EFD8-4B4D-952E-37E1CDC52255}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A6C6A8BE-EFD8-4B4D-952E-37E1CDC52255}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6C6A8BE-EFD8-4B4D-952E-37E1CDC52255}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6C6A8BE-EFD8-4B4D-952E-37E1CDC52255}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6C6A8BE-EFD8-4B4D-952E-37E1CDC52255}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A67AD5C5-97AC-4142-BDAC-93C037DB94B1}
+	EndGlobalSection
+EndGlobal
