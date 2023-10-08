@@ -30,7 +30,7 @@ namespace cnsGenPassword
             {
                 characters.Append(StspecialSym);
             }
-            if (symbols.Length == 0)
+            if (symbols.Length != 0)
             {
                 characters.Append(symbols);
             }
