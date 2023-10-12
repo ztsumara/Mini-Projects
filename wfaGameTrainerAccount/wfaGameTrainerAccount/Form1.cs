@@ -18,9 +18,18 @@ namespace wfaGameTrainerAccount
         {
             InitializeComponent();
             g = new Game();
+            g.Change += G_Change;
             g.Reset();
+
+            buYes.Click += (s, e) => g.DoAnswer(true);
+            buNo.Click += (s, e) => g.DoAnswer(false);
         }
 
-        
+        private void G_Change(object sender, EventArgs e)
+        {
+            laTrue.Text = $"Верно = {g.CountCorrect}";
+            laFalse.Text = $"Неверно = {g.CountIncorrect}";
+            laCode.Text = g.CodeText;
+        }
     }
 }
