@@ -11,6 +11,7 @@ namespace wfaGameTrainerAccount
         public string CodeText { get; private set; }
 
         private bool answerCorrect;
+        public int level = 1;
 
         public event EventHandler Change;
         internal void Reset()
@@ -24,9 +25,15 @@ namespace wfaGameTrainerAccount
         {
             //CodeText = "11 + 22 = 33";
             //answerCorrect = true;
-            int first = rnd.Next(50);
-            int second = rnd.Next(50);
+            int first = rnd.Next(50*level);
+            int second = rnd.Next(50*level);
+            int operation = rnd.Next(2);
             int result = first + second;
+            if (operation == 0)
+            {
+                result = first - second;
+            }
+            
             int resultNew = result;
             if(rnd.Next(2) == 1) {
                 resultNew += rnd.Next(1,10)*(rnd.Next(2) == 1? 1: -1);
@@ -34,6 +41,11 @@ namespace wfaGameTrainerAccount
             }
             answerCorrect =(result == resultNew);
             CodeText = $"{first} + {second} = {resultNew}";
+            if (operation == 0)
+            {
+                CodeText = $"{first} - {second} = {resultNew}";
+            }
+            level = CountCorrect / 10 + 1;
             Change?.Invoke(this, EventArgs.Empty);
         }
         public void DoAnswer(bool answer)

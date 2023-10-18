@@ -30,6 +30,7 @@ namespace wfaGameTrainerAccount
             laTrue.Text = $"Верно = {g.CountCorrect}";
             laFalse.Text = $"Неверно = {g.CountIncorrect}";
             laCode.Text = g.CodeText;
+            laLevel.Text = $"Уровень: {g.level}";
         }
     }
 }

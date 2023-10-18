@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34031.279
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cnsGenMapMaze", "cnsGenMapMaze\cnsGenMapMaze.csproj", "{D0F4971F-D2EF-4E94-BB84-E068F5B3EFB9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D0F4971F-D2EF-4E94-BB84-E068F5B3EFB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0F4971F-D2EF-4E94-BB84-E068F5B3EFB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0F4971F-D2EF-4E94-BB84-E068F5B3EFB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0F4971F-D2EF-4E94-BB84-E068F5B3EFB9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {70B4A589-9D70-419C-A109-5EDCF50111E4}
+	EndGlobalSection
+EndGlobal

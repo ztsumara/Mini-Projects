@@ -36,6 +36,7 @@
             this.buYes = new System.Windows.Forms.Button();
             this.laCode = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
+            this.laLevel = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
@@ -129,7 +130,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.laCode.Font = new System.Drawing.Font("Microsoft Sans Serif", 30F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.laCode.Location = new System.Drawing.Point(12, 218);
+            this.laCode.Location = new System.Drawing.Point(12, 236);
             this.laCode.Name = "laCode";
             this.laCode.Size = new System.Drawing.Size(571, 67);
             this.laCode.TabIndex = 2;
@@ -148,11 +149,24 @@
             this.label4.Text = "Верно?";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // laLevel
+            // 
+            this.laLevel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.laLevel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.laLevel.Location = new System.Drawing.Point(12, 210);
+            this.laLevel.Name = "laLevel";
+            this.laLevel.Size = new System.Drawing.Size(568, 26);
+            this.laLevel.TabIndex = 4;
+            this.laLevel.Text = "Уровень: 1";
+            this.laLevel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(595, 515);
+            this.Controls.Add(this.laLevel);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.laCode);
             this.Controls.Add(this.tableLayoutPanel2);
@@ -177,6 +191,7 @@
         private System.Windows.Forms.Button buYes;
         private System.Windows.Forms.Label laCode;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label laLevel;
     }
 }
 
