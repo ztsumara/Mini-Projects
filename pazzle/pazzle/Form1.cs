@@ -16,7 +16,7 @@ namespace pazzle
             InitializeComponent();
             createCells();
             ResizeCells();
-
+            this.ResizeEnd += (s, e) => ResizeCells();
             this.KeyDown += PictureBoxAll_KeyDown;
         }
 
@@ -105,6 +105,7 @@ namespace pazzle
                             if (p.X > c * cellWight - STEP && p.X < c* cellWight + STEP)
                             {
                                 p.X = c * cellWight;
+
                             }
                             if (p.Y > r * cellHeight - STEP && p.Y < r* cellHeight + STEP)
                             {
