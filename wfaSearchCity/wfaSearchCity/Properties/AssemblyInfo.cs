@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // Общие сведения об этой сборке предоставляются следующим набором
 // набора атрибутов. Измените значения этих атрибутов для изменения сведений,
 // связанных со сборкой.
-[assembly: AssemblyTitle("wfaControllCreate")]
+[assembly: AssemblyTitle("wfaSearchCity")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("wfaControllCreate")]
+[assembly: AssemblyProduct("wfaSearchCity")]
 [assembly: AssemblyCopyright("Copyright ©  2023")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // Следующий GUID служит для идентификации библиотеки типов, если этот проект будет видимым для COM
-[assembly: Guid("dd8caf00-c0cc-4ab0-ae2d-109d766d1540")]
+[assembly: Guid("770f4048-51a4-4f12-ad75-5f13482190f7")]
 
 // Сведения о версии сборки состоят из указанных ниже четырех значений:
 //

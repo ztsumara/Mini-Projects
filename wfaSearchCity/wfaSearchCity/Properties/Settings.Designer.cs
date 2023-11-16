@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace wfaControllCreate.Properties
+namespace wfaSearchCity.Properties
 {
 
 

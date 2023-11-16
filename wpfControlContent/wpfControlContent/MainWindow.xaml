@@ -1,0 +1,28 @@
+﻿<Window x:Class="wpfControlContent.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:wpfControlContent"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="300">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Button Grid.Column="0" Content="xxx"/>
+        <Button Grid.Column="1">bbbb</Button>
+        <Button Grid.Column="2">
+            <Button.Content>
+                <StackPanel>
+                    <Label Content="111" Background="Aquamarine"/>
+                    <Label Content="222" Background="Gray"/>
+                    <Label Content="333" Background="Purple"/>
+                </StackPanel>
+            </Button.Content>
+        </Button>
+
+    </Grid>
+</Window>
