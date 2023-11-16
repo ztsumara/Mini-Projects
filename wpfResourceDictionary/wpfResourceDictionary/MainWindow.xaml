@@ -1,0 +1,27 @@
+﻿<Window x:Class="wpfResourceDictionary.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:wpfResourceDictionary"
+        mc:Ignorable="d"
+        Title="wpfResourceDictionary" Height="450" Width="300">
+    <Window.Resources>
+        <!-- Если только один файл-->
+        <!-- <ResourceDictionary Source="Dictionary1.xaml"/> -->
+        <!-- Если один и более файлов-->
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Dictionary1.xaml"/>
+                <ResourceDictionary Source="Dictionary2.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <StackPanel>
+        <Button Content="Button 1" Height="50" Margin="5" Background="LightGreen"/>
+        <Button Content="{StaticResource context_Button}"/>
+        <Button Content="Button 3" Style="{StaticResource style_button}"/>
+        <Button Content="Button 4"/>
+        <Button Content="Button 5"/>
+    </StackPanel>
+</Window>
