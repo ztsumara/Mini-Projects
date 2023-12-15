@@ -32,13 +32,19 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.файлToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.buOpen = new System.Windows.Forms.ToolStripMenuItem();
+            this.buSave = new System.Windows.Forms.ToolStripMenuItem();
+            this.областьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.buExportToFile = new System.Windows.Forms.ToolStripMenuItem();
+            this.buImportFromFile = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.buFindObjects = new System.Windows.Forms.ToolStripButton();
+            this.buCreateRect = new System.Windows.Forms.ToolStripButton();
+            this.buSaveObl = new System.Windows.Forms.ToolStripButton();
+            this.buSaveActiveObl = new System.Windows.Forms.ToolStripButton();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.panel1 = new System.Windows.Forms.Panel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.buSave = new System.Windows.Forms.ToolStripMenuItem();
-            this.buCreateRect = new System.Windows.Forms.ToolStripButton();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -48,7 +54,8 @@
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.файлToolStripMenuItem});
+            this.файлToolStripMenuItem,
+            this.областьToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(800, 24);
@@ -67,15 +74,44 @@
             // buOpen
             // 
             this.buOpen.Name = "buOpen";
-            this.buOpen.Size = new System.Drawing.Size(180, 22);
+            this.buOpen.Size = new System.Drawing.Size(133, 22);
             this.buOpen.Text = "Открыть";
             this.buOpen.Click += new System.EventHandler(this.buOpen_Click);
+            // 
+            // buSave
+            // 
+            this.buSave.Name = "buSave";
+            this.buSave.Size = new System.Drawing.Size(133, 22);
+            this.buSave.Text = "Сохранить";
+            // 
+            // областьToolStripMenuItem
+            // 
+            this.областьToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.buExportToFile,
+            this.buImportFromFile});
+            this.областьToolStripMenuItem.Name = "областьToolStripMenuItem";
+            this.областьToolStripMenuItem.Size = new System.Drawing.Size(65, 20);
+            this.областьToolStripMenuItem.Text = "Область";
+            // 
+            // buExportToFile
+            // 
+            this.buExportToFile.Name = "buExportToFile";
+            this.buExportToFile.Size = new System.Drawing.Size(171, 22);
+            this.buExportToFile.Text = "Экспорт в файл";
+            // 
+            // buImportFromFile
+            // 
+            this.buImportFromFile.Name = "buImportFromFile";
+            this.buImportFromFile.Size = new System.Drawing.Size(171, 22);
+            this.buImportFromFile.Text = "Импорт из файла";
             // 
             // toolStrip1
             // 
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.buFindObjects,
-            this.buCreateRect});
+            this.buCreateRect,
+            this.buSaveObl,
+            this.buSaveActiveObl});
             this.toolStrip1.Location = new System.Drawing.Point(0, 24);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(800, 25);
@@ -91,6 +127,33 @@
             this.buFindObjects.Size = new System.Drawing.Size(123, 22);
             this.buFindObjects.Text = "Распознать объекты";
             this.buFindObjects.Click += new System.EventHandler(this.buFindObjects_Click);
+            // 
+            // buCreateRect
+            // 
+            this.buCreateRect.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.buCreateRect.Image = ((System.Drawing.Image)(resources.GetObject("buCreateRect.Image")));
+            this.buCreateRect.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.buCreateRect.Name = "buCreateRect";
+            this.buCreateRect.Size = new System.Drawing.Size(101, 22);
+            this.buCreateRect.Text = "Создать область";
+            // 
+            // buSaveObl
+            // 
+            this.buSaveObl.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.buSaveObl.Image = ((System.Drawing.Image)(resources.GetObject("buSaveObl.Image")));
+            this.buSaveObl.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.buSaveObl.Name = "buSaveObl";
+            this.buSaveObl.Size = new System.Drawing.Size(118, 22);
+            this.buSaveObl.Text = "Сохранить области";
+            // 
+            // buSaveActiveObl
+            // 
+            this.buSaveActiveObl.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.buSaveActiveObl.Image = ((System.Drawing.Image)(resources.GetObject("buSaveActiveObl.Image")));
+            this.buSaveActiveObl.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.buSaveActiveObl.Name = "buSaveActiveObl";
+            this.buSaveActiveObl.Size = new System.Drawing.Size(173, 22);
+            this.buSaveActiveObl.Text = "Сохранить активную область";
             // 
             // openFileDialog1
             // 
@@ -116,33 +179,31 @@
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             // 
-            // buSave
+            // checkBox1
             // 
-            this.buSave.Name = "buSave";
-            this.buSave.Size = new System.Drawing.Size(180, 22);
-            this.buSave.Text = "Сохранить";
-            // 
-            // buCreateRect
-            // 
-            this.buCreateRect.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.buCreateRect.Image = ((System.Drawing.Image)(resources.GetObject("buCreateRect.Image")));
-            this.buCreateRect.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.buCreateRect.Name = "buCreateRect";
-            this.buCreateRect.Size = new System.Drawing.Size(101, 22);
-            this.buCreateRect.Text = "Создать область";
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(641, 32);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(159, 17);
+            this.checkBox1.TabIndex = 1;
+            this.checkBox1.Text = "Автообновление контуров";
+            this.checkBox1.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.menuStrip1);
+            this.KeyPreview = true;
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
@@ -166,6 +227,12 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.ToolStripMenuItem buSave;
         private System.Windows.Forms.ToolStripButton buCreateRect;
+        private System.Windows.Forms.ToolStripButton buSaveObl;
+        private System.Windows.Forms.ToolStripButton buSaveActiveObl;
+        private System.Windows.Forms.ToolStripMenuItem областьToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem buExportToFile;
+        private System.Windows.Forms.ToolStripMenuItem buImportFromFile;
+        private System.Windows.Forms.CheckBox checkBox1;
     }
 }
 

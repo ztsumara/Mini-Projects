@@ -40,49 +40,198 @@ namespace Contour
         private Point endPoint;
         private Rectangle oldRect= Rectangle.Empty;
         int placehover = 15;
-        
-        
+        int penwidth = 3;
+
+
+
 
         public Form1()
         {
             InitializeComponent();
-            
+
+            this.KeyDown += Form1_KeyDown;
             
             panel1.MouseWheel += panel1_MouseWheel;
             pictureBox1.MouseDown += PictureBox1_MouseDown;
             pictureBox1.MouseMove += PictureBox1_MouseMove;
             pictureBox1.MouseUp += PictureBox1_MouseUp;
-           
-
+            buSaveObl.Click += BuSaveObl_Click;
+            buSaveActiveObl.Click += BuSaveActiveObl_Click;
             pictureBox1.Paint += PictureBox1_Paint;
             buSave.Click += BuSave_Click;
             buCreateRect.Click += BuCreateRect_Click;
-            this.KeyDown += Form1_KeyDown;
+            buExportToFile.Click += BuExportToFile_Click;
+            buImportFromFile.Click += BuImportFromFile_Click;
+            
         }
 
-        private void BuCreateRect_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("Выделите область", "Создание области", MessageBoxButtons.OK);
-            newRect = true;
-        }
+        
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Delete) {
+            
+            if (e.KeyCode == Keys.Delete)
+            {
                 if (activeRectangle != Rectangle.Empty)
                 {
                     rectangles.Remove(activeRectangle);
                     pictureBox1.Invalidate();
                 }
             }
-            
         }
 
-       
+        //-----------------------------------------------------------------------------------------------------------------------------
+        private void BuImportFromFile_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog import = new OpenFileDialog();
+            import.Title = "Сохранить области как";
+            
+            import.CheckPathExists = true;
+
+            import.Filter = "(*.txt)|*.txt";
+            import.ShowHelp = true;
+            DialogResult res = import.ShowDialog();
+            if (res == DialogResult.OK)
+            {
+                using (StreamReader sr = new StreamReader(import.FileName))
+                {
+                    string line;
+                    while ((line = sr.ReadLine()) != null)
+                    {
+                        string[] parts = line.Split(new[] { ", " }, StringSplitOptions.None);
+                        int x = int.Parse(parts[0].Split(new[] { ": " }, StringSplitOptions.None)[1]);
+                        int y = int.Parse(parts[1]);
+                        int width = int.Parse(parts[2].Split(new[] { ": " }, StringSplitOptions.None)[1]);
+                        int height = int.Parse(parts[3]);
+                        Rectangle rect = new Rectangle(x, y, width, height); // Ваш прямоугольник
+                        rectangles.Add(rect);
+                    }
+                }
+                pictureBox1.Invalidate();
+            }
+            else
+            {
+                MessageBox.Show("Картинка не выбрана!", "Выберите картинку!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+            
+        }
+        //-----------------------------------------------------------------------------------------------------------------------------
+        private void BuExportToFile_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Title = "Сохранить области как";
+            saveFileDialog.OverwritePrompt = true;
+            saveFileDialog.CheckPathExists = true;
+
+            saveFileDialog.Filter = "(*.txt)|*.txt";
+            saveFileDialog.ShowHelp = true;
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    using (StreamWriter sw = new StreamWriter(saveFileDialog.FileName, true))
+                    {
+                        foreach (Rectangle rect in rectangles)
+                        {
+                            sw.WriteLine($"Координаты: {rect.X}, {rect.Y}, Размеры: {rect.Width}, {rect.Height}");
+                            this.Cursor= Cursors.WaitCursor;
+                        }
+                        this.Cursor = Cursors.Default;
+                    }
+                }
+                catch
+                {
+                    MessageBox.Show("Невозможно сохранить изображение", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+           
+        }
+        //-----------------------------------------------------------------------------------------------------------------------------
+        private void BuSaveActiveObl_Click(object sender, EventArgs e)
+        {
+            if (activeRectangle != Rectangle.Empty)
+            {
+                Bitmap bmp = new Bitmap(activeRectangle.Width, activeRectangle.Height);
+
+                
+                Graphics g = Graphics.FromImage(bmp);
+
+               
+                g.DrawImage(pictureBox1.Image, 0, 0, activeRectangle, GraphicsUnit.Pixel);
+
+                // Сохраните изображение
+                SaveFileDialog saveFileDialog = new SaveFileDialog();
+                saveFileDialog.Title = "Сохранить картинку как";
+                saveFileDialog.OverwritePrompt = true;
+                saveFileDialog.CheckPathExists = true;
+
+                saveFileDialog.Filter = "Image Files(*.PNG)|*.png|Image Files(*.JPG)|*.jpg|All files(*.*)|*.*";
+                saveFileDialog.ShowHelp = true;
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        bmp.Save(saveFileDialog.FileName);
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Невозможно сохранить изображение", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Нет активной области", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        //-----------------------------------------------------------------------------------------------------------------------------
+        private void BuSaveObl_Click(object sender, EventArgs e)
+        {
+            foreach (Rectangle rectangle in rectangles)
+            {
+                Bitmap bmp = new Bitmap(rectangle.Width, rectangle.Height);
+
+                
+                Graphics g = Graphics.FromImage(bmp);
+
+                
+                g.DrawImage(pictureBox1.Image, 0, 0, rectangle, GraphicsUnit.Pixel);
+
+                // Сохраните изображение
+                SaveFileDialog saveFileDialog = new SaveFileDialog();
+                saveFileDialog.Title = "Сохранить картинку как";
+                saveFileDialog.OverwritePrompt = true;
+                saveFileDialog.CheckPathExists = true;
+
+                saveFileDialog.Filter = "Image Files(*.PNG)|*.png|Image Files(*.JPG)|*.jpg|All files(*.*)|*.*";
+                saveFileDialog.ShowHelp = true;
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        bmp.Save(saveFileDialog.FileName);
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Невозможно сохранить изображение", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+        }
+        //-----------------------------------------------------------------------------------------------------------------------------
+        private void BuCreateRect_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Выделите область", "Создание области", MessageBoxButtons.OK);
+            newRect = true;
+        }
+        //-----------------------------------------------------------------------------------------------------------------------------
+        
+        //-----------------------------------------------------------------------------------------------------------------------------
+
 
         private void PictureBox1_Paint(object sender, PaintEventArgs e)
         {
-            Pen pen = new Pen(Color.Red, 5);
+            Pen pen = new Pen(Color.Red, penwidth);
 
 
 
@@ -93,7 +242,7 @@ namespace Contour
                 {
                     if (rectangle == activeRectangle)
                     {
-                        Pen foractive = new Pen(Color.LightSeaGreen, 5);
+                        Pen foractive = new Pen(Color.LightSeaGreen, penwidth);
                         foractive.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
                         e.Graphics.DrawRectangle(foractive, rectangle);
                     }
@@ -103,9 +252,12 @@ namespace Contour
                     }
                 }
             }
+
+
+
             
         }
-
+        //-----------------------------------------------------------------------------------------------------------------------------
         private void BuSave_Click(object sender, EventArgs e)
         {
             if (pictureBox1.Image != null)
@@ -130,8 +282,8 @@ namespace Contour
                 }
             }
         }
+        //-----------------------------------------------------------------------------------------------------------------------------
 
-     
 
         private void PictureBox1_MouseUp(object sender, MouseEventArgs e)
         {
@@ -155,7 +307,7 @@ namespace Contour
                 pictureBox1.Cursor = Cursors.Default;
             }
         }
-
+        //-----------------------------------------------------------------------------------------------------------------------------
         private void PictureBox1_MouseMove(object sender, MouseEventArgs e)
         {
             Control c = sender as Control;
@@ -275,7 +427,7 @@ namespace Contour
             
 
         }
-
+        //-----------------------------------------------------------------------------------------------------------------------------
         private void PictureBox1_MouseDown(object sender, MouseEventArgs e)
         {
             
@@ -314,6 +466,7 @@ namespace Contour
                     }
                    
                 }
+                
             }
 
             if (e.Button == MouseButtons.Right)
@@ -353,9 +506,10 @@ namespace Contour
 
             
         }
-
+        //-----------------------------------------------------------------------------------------------------------------------------
         private void panel1_MouseWheel(object sender, MouseEventArgs e)
         {
+            
 
             float zoomratio = (float)(e.Delta > 0 ? 1.15 : 0.85);
             pictureBox1.Width = (int)(pictureBox1.Width * zoomratio);
@@ -363,13 +517,23 @@ namespace Contour
             pictureBox1.Top = (int)(e.Y - zoomratio * (e.Y - pictureBox1.Top));
             pictureBox1.Left = (int)(e.X - zoomratio * (e.X - pictureBox1.Left));
 
+            //rectangles= new List<Rectangle>();
+            if (checkBox1.CheckState == CheckState.Checked)
+            {
+                FindObjects();
+            }
+            else
+            {
+                rectangles= new List<Rectangle>();
+            }
+            
         }
-
+        //-----------------------------------------------------------------------------------------------------------------------------
         private void Form1_Load(object sender, EventArgs e)
         {
 
         }
-
+        //-----------------------------------------------------------------------------------------------------------------------------
         private void buOpen_Click(object sender, EventArgs e)
         {
             DialogResult res = openFileDialog1.ShowDialog();
@@ -383,69 +547,171 @@ namespace Contour
                 MessageBox.Show("Картинка не выбрана!", "Выберите картинку!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
+        //-----------------------------------------------------------------------------------------------------------------------------
 
-      
         private void buFindObjects_Click(object sender, EventArgs e)
         {
-            Bitmap image = new Bitmap(pictureBox1.Image);
-            int flag = 0;
-
-            Graphics g = Graphics.FromImage(image);
-            int minX = image.Width;
-            int minY = image.Height;
-            int maxX = 0;
-            int maxY = 0;
-
-            // Проход по всем пикселям изображения
-            for (int x = 0; x < image.Width; x++)
-            {
-                for (int y = 0; y < image.Height; y++)
-                {
-                    Color pixelColor = image.GetPixel(x, y);
-
-                    // Проверка, является ли пиксель темным
-                    if (pixelColor.GetBrightness() < 0.8)
-                    {
-                        
-                        // Обновление координат и размеров прямоугольника
-                        if (x < minX)
-                            minX = x;
-                        if (x > maxX)
-                            maxX = x;
-                        if (y < minY)
-                            minY = y;
-                        if (y > maxY)
-                            maxY = y;
-                        
-                    }
-                  
-                }
-                
-            }
-
-            // Вычисление координат центра прямоугольника
-            int centerX = (minX + maxX) / 2;
-            int centerY = (minY + maxY) / 2;
-
-            // Вычисление размеров прямоугольника
-            int width = maxX - minX + 1;
-            int height = maxY - minY + 1;
-            int a = pictureBox1.Width / pictureBox1.Height;
-            Point center = new Point(centerX - width / 2, centerY - height / 2);
-            Size rectSize = new Size(width + 1, height + 1);
-            Rectangle rect = new Rectangle(center, rectSize);
-            rectangles.Add(rect);
-            Pen pen = new Pen(Color.Red, 5);
-
-            
-            pictureBox1.Image = image;
+            FindObjects();
 
 
 
 
         }
+        //-----------------------------------------------------------------------------------------------------------------------------
+        private void FindObjects()
+        {
+            rectangles= new List<Rectangle>();
+            
+            Bitmap image = new Bitmap(pictureBox1.Image);
+            
+            
+            //----------------------------------------------------------------------
+            Point p = pictureBox1.PointToClient(Cursor.Position);
+            Point unscaled_p = new Point();
 
-        
+            // image and container dimensions
+            int w_i = pictureBox1.Image.Width;
+            int h_i = pictureBox1.Image.Height;
+            int w_c = pictureBox1.Width;
+            int h_c = pictureBox1.Height;
+            float filler = 0;
+            float imageRatio = w_i / (float)h_i; // image W:H ratio
+            float containerRatio = w_c / (float)h_c; // container W:H ratio
 
+            if (imageRatio >= containerRatio)
+            {
+                // horizontal image
+                float scaleFactor = w_c / (float)w_i;
+                float scaledHeight = h_i * scaleFactor;
+                // calculate gap between top of container and top of image
+                filler = Math.Abs(h_c - scaledHeight) / 2;
+                unscaled_p.X = (int)(p.X / scaleFactor);
+                unscaled_p.Y = (int)((p.Y - filler) / scaleFactor);
+            }
+            else
+            {
+                // vertical image
+                float scaleFactor = h_c / (float)h_i;
+                float scaledWidth = w_i * scaleFactor;
+                filler = Math.Abs(w_c - scaledWidth) / 2;
+                unscaled_p.X = (int)((p.X - filler) / scaleFactor);
+                unscaled_p.Y = (int)(p.Y / scaleFactor);
+            }
+            //----------------------------------------------------------------------
+
+            float coefx = (float)(pictureBox1.Width-filler*2) / image.Width;
+
+            float coefy = (float)pictureBox1.Height / image.Height;
+
+            
+            Bitmap image1 = new Bitmap(pictureBox1.Image);
+            Graphics g = Graphics.FromImage(image);
+            
+
+
+            int x = 0;
+            int y = 0;
+            float fonebrightness = (float)(getBrightFone() - 0.3);
+            // Проход по всем пикселям изображения
+            while (x < image.Width)
+            {
+                y = 0;
+                while (y < image.Height)
+                {
+                    
+                    Color pixelColor = image.GetPixel(x, y);
+
+                    // Проверка, является ли пиксель темным
+                    if (pixelColor.GetBrightness() < fonebrightness)
+                    {
+
+
+                        int x1 = x;
+                        int y1 = y;
+
+                        int width = 0;
+                        int height = 0;
+                        while ((image.GetPixel(x, y).GetBrightness() < fonebrightness) && x < image.Width)
+                        {
+                            width++;
+                            x++;
+                        }
+                        x--;
+                        x = x - width / 2;
+                        while ((image.GetPixel(x, y).GetBrightness() < fonebrightness) && y > 0)
+                        {
+
+                            y--;
+                        }
+                        y1 = y;
+                        y++;
+                        while ((image.GetPixel(x, y).GetBrightness() < fonebrightness) && y < image.Height)
+                        {
+                            height++;
+                            y++;
+                        }
+                        float xx = x1;
+
+                        Point center = new Point(x1 - 2, y1 - 2);
+                        Size rectSize = new Size(width + 4, height + 4);
+                        Rectangle rect = new Rectangle(center, rectSize);
+                        SolidBrush brush = new SolidBrush(Color.White);
+                        g.FillRectangle(brush, rect);
+                        center = new Point(Convert.ToInt32(x1 * coefx) + Convert.ToInt32(filler) - 2, Convert.ToInt32(y1 * coefy) - 2);
+                        rectSize = new Size(Convert.ToInt32((width) * coefx) + 4, Convert.ToInt32((height) * coefy) + 4);
+                        rect = new Rectangle(center, rectSize);
+                        rectangles.Add(rect);
+
+
+                        //// Обновление координат и размеров прямоугольника
+                        //if (x < minX)
+                        //    minX = x;
+                        //if (x > maxX)
+                        //    maxX = x;
+                        //if (y < minY)
+                        //    minY = y;
+                        //if (y > maxY)
+                        //    maxY = y;
+
+                    }
+                    y++;
+
+
+                }
+                x++;
+
+
+            }
+
+            // Вычисление координат центра прямоугольника
+            //int centerX = (minX + maxX) / 2;
+            //int centerY = (minY + maxY) / 2;
+
+            //// Вычисление размеров прямоугольника
+            //int width = maxX - minX + 1;
+            //int height = maxY - minY + 1;
+            //int a = pictureBox1.Width / pictureBox1.Height;
+            //Point center = new Point(centerX - width / 2, centerY - height / 2);
+            //Size rectSize = new Size(width + 1, height + 1);
+            //Rectangle rect = new Rectangle(center, rectSize);
+            //rectangles.Add(rect);
+
+            //pictureBox1.Height = pictureBox1.Image.Height; pictureBox1.Width=pictureBox1.Image.Width;
+
+
+            pictureBox1.Image = image1;
+        }
+        //-----------------------------------------------------------------------------------------------------------------------------
+        private float getBrightFone()
+        {
+            Bitmap image = new Bitmap(pictureBox1.Image);
+            Color backgroundColor1 = image.GetPixel(1, 1);
+            Color backgroundColor2 = image.GetPixel(1, image.Height-1);
+            Color backgroundColor3 = image.GetPixel(image.Width-1, image.Height-1);
+            Color backgroundColor4 = image.GetPixel(image.Width - 1, 1);
+            float res = (backgroundColor1.GetBrightness()+ backgroundColor2.GetBrightness()+backgroundColor3.GetBrightness()+backgroundColor4.GetBrightness())/4;
+            return res;
+        }
+        //-----------------------------------------------------------------------------------------------------------------------------
     }
 }
