@@ -25,7 +25,7 @@ namespace Contour
         
 
         List<Rectangle> rectangles = new List<Rectangle>();
-        
+        Image image2 = null;
 
         private Rectangle activeRectangle=Rectangle.Empty;
         private bool isResizing;
@@ -41,7 +41,7 @@ namespace Contour
         private Rectangle oldRect= Rectangle.Empty;
         int placehover = 15;
         int penwidth = 3;
-
+        float zoom = 1.0f;
 
 
 
@@ -50,7 +50,7 @@ namespace Contour
             InitializeComponent();
 
             this.KeyDown += Form1_KeyDown;
-            
+            pictureBox1.BackColor = Color.White;
             panel1.MouseWheel += panel1_MouseWheel;
             pictureBox1.MouseDown += PictureBox1_MouseDown;
             pictureBox1.MouseMove += PictureBox1_MouseMove;
@@ -151,14 +151,22 @@ namespace Contour
         {
             if (activeRectangle != Rectangle.Empty)
             {
-                Bitmap bmp = new Bitmap(activeRectangle.Width, activeRectangle.Height);
+                float filler = getFiller();
+                Rectangle rect = activeRectangle;
 
                 
+                
+                
+                
+                Bitmap bmp = new Bitmap(rect.Width, rect.Height);
+                //center = new Point(Convert.ToInt32(x1 * coefx) + Convert.ToInt32(filler) - 2, Convert.ToInt32(y1 * coefy) - 2);
+                //rectSize = new Size(Convert.ToInt32((width) * coefx) + 4, Convert.ToInt32((height) * coefy) + 4);
+
                 Graphics g = Graphics.FromImage(bmp);
 
                
-                g.DrawImage(pictureBox1.Image, 0, 0, activeRectangle, GraphicsUnit.Pixel);
-
+                g.DrawImage(pictureBox1.Image, 0, 0, rect, GraphicsUnit.Pixel);
+                
                 // Сохраните изображение
                 SaveFileDialog saveFileDialog = new SaveFileDialog();
                 saveFileDialog.Title = "Сохранить картинку как";
@@ -189,6 +197,8 @@ namespace Contour
         {
             foreach (Rectangle rectangle in rectangles)
             {
+                
+               
                 Bitmap bmp = new Bitmap(rectangle.Width, rectangle.Height);
 
                 
@@ -311,6 +321,9 @@ namespace Contour
         private void PictureBox1_MouseMove(object sender, MouseEventArgs e)
         {
             Control c = sender as Control;
+            Bitmap image = new Bitmap(pictureBox1.Image);
+            //Color pixelColor = image.GetPixel(e.X, e.Y);
+            //Form1.ActiveForm.Text = $"{e.Location}, {pixelColor}";
             if (dragging && pictureBox1 != null)
             {
                 c.Top += e.Y - startdrag.Y;
@@ -438,7 +451,7 @@ namespace Contour
                 startdrag.X = e.X;
                 startdrag.Y = e.Y;
             }
-
+            
 
             if (e.Button == MouseButtons.Left)
             {
@@ -511,11 +524,17 @@ namespace Contour
         {
             
 
-            float zoomratio = (float)(e.Delta > 0 ? 1.15 : 0.85);
-            pictureBox1.Width = (int)(pictureBox1.Width * zoomratio);
-            pictureBox1.Height = (int)(pictureBox1.Height * zoomratio);
-            pictureBox1.Top = (int)(e.Y - zoomratio * (e.Y - pictureBox1.Top));
-            pictureBox1.Left = (int)(e.X - zoomratio * (e.X - pictureBox1.Left));
+            float zoomratio = (float)(e.Delta > 0 ? 0.1f : -0.1f);
+            
+            zoom += zoomratio;
+            float zoom1 = 1f + zoomratio;
+            pictureBox1.Image = ScaleImage(image2, zoom);
+            pictureBox1.Height= pictureBox1.Image.Height;
+            pictureBox1.Width= pictureBox1.Image.Width;
+            //pictureBox1.Width = (int)(pictureBox1.Width * zoomratio);
+            //pictureBox1.Height = (int)(pictureBox1.Height * zoomratio);
+            pictureBox1.Top = (int)(e.Y - zoom1 * (e.Y - pictureBox1.Top));
+            pictureBox1.Left = (int)(e.X - zoom1 * (e.X - pictureBox1.Left));
 
             //rectangles= new List<Rectangle>();
             if (checkBox1.CheckState == CheckState.Checked)
@@ -541,6 +560,9 @@ namespace Contour
             {
                 fileName = openFileDialog1.FileName;
                 pictureBox1.Image=Image.FromFile(fileName);
+                pictureBox1.Width=pictureBox1.Image.Width;
+                pictureBox1.Height = pictureBox1.Image.Height;
+                image2 = pictureBox1.Image;
             }
             else
             {
@@ -566,37 +588,8 @@ namespace Contour
             
             
             //----------------------------------------------------------------------
-            Point p = pictureBox1.PointToClient(Cursor.Position);
-            Point unscaled_p = new Point();
-
-            // image and container dimensions
-            int w_i = pictureBox1.Image.Width;
-            int h_i = pictureBox1.Image.Height;
-            int w_c = pictureBox1.Width;
-            int h_c = pictureBox1.Height;
-            float filler = 0;
-            float imageRatio = w_i / (float)h_i; // image W:H ratio
-            float containerRatio = w_c / (float)h_c; // container W:H ratio
-
-            if (imageRatio >= containerRatio)
-            {
-                // horizontal image
-                float scaleFactor = w_c / (float)w_i;
-                float scaledHeight = h_i * scaleFactor;
-                // calculate gap between top of container and top of image
-                filler = Math.Abs(h_c - scaledHeight) / 2;
-                unscaled_p.X = (int)(p.X / scaleFactor);
-                unscaled_p.Y = (int)((p.Y - filler) / scaleFactor);
-            }
-            else
-            {
-                // vertical image
-                float scaleFactor = h_c / (float)h_i;
-                float scaledWidth = w_i * scaleFactor;
-                filler = Math.Abs(w_c - scaledWidth) / 2;
-                unscaled_p.X = (int)((p.X - filler) / scaleFactor);
-                unscaled_p.Y = (int)(p.Y / scaleFactor);
-            }
+            float filler = getFiller();
+            
             //----------------------------------------------------------------------
 
             float coefx = (float)(pictureBox1.Width-filler*2) / image.Width;
@@ -605,6 +598,7 @@ namespace Contour
 
             
             Bitmap image1 = new Bitmap(pictureBox1.Image);
+
             Graphics g = Graphics.FromImage(image);
             
 
@@ -657,9 +651,7 @@ namespace Contour
                         Rectangle rect = new Rectangle(center, rectSize);
                         SolidBrush brush = new SolidBrush(Color.White);
                         g.FillRectangle(brush, rect);
-                        center = new Point(Convert.ToInt32(x1 * coefx) + Convert.ToInt32(filler) - 2, Convert.ToInt32(y1 * coefy) - 2);
-                        rectSize = new Size(Convert.ToInt32((width) * coefx) + 4, Convert.ToInt32((height) * coefy) + 4);
-                        rect = new Rectangle(center, rectSize);
+                       
                         rectangles.Add(rect);
 
 
@@ -701,6 +693,43 @@ namespace Contour
 
             pictureBox1.Image = image1;
         }
+
+        private float getFiller()
+        {
+            Point p = pictureBox1.PointToClient(Cursor.Position);
+            Point unscaled_p = new Point();
+
+            // image and container dimensions
+            int w_i = pictureBox1.Image.Width;
+            int h_i = pictureBox1.Image.Height;
+            int w_c = pictureBox1.Width;
+            int h_c = pictureBox1.Height;
+            float filler = 0;
+            float imageRatio = w_i / (float)h_i; // image W:H ratio
+            float containerRatio = w_c / (float)h_c; // container W:H ratio
+
+            if (imageRatio >= containerRatio)
+            {
+                // horizontal image
+                float scaleFactor = w_c / (float)w_i;
+                float scaledHeight = h_i * scaleFactor;
+                // calculate gap between top of container and top of image
+                filler = Math.Abs(h_c - scaledHeight) / 2;
+                unscaled_p.X = (int)(p.X / scaleFactor);
+                unscaled_p.Y = (int)((p.Y - filler) / scaleFactor);
+            }
+            else
+            {
+                // vertical image
+                float scaleFactor = h_c / (float)h_i;
+                float scaledWidth = w_i * scaleFactor;
+                filler = Math.Abs(w_c - scaledWidth) / 2;
+                unscaled_p.X = (int)((p.X - filler) / scaleFactor);
+                unscaled_p.Y = (int)(p.Y / scaleFactor);
+            }
+            return filler;
+        }
+
         //-----------------------------------------------------------------------------------------------------------------------------
         private float getBrightFone()
         {
@@ -713,5 +742,17 @@ namespace Contour
             return res;
         }
         //-----------------------------------------------------------------------------------------------------------------------------
+        private Image ScaleImage(Image image, float scale)
+        {
+            int width = (int)(image.Width * scale);
+            int height = (int)(image.Height * scale);
+            Bitmap scaledImage = new Bitmap(width, height);
+            using (Graphics graphics = Graphics.FromImage(scaledImage))
+            {
+                graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+                graphics.DrawImage(image, 0, 0, width, height);
+            }
+            return scaledImage;
+        }
     }
 }
