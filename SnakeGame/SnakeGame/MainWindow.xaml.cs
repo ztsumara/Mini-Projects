@@ -12,6 +12,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Media;
+using System.Numerics;
+using System.Security.Policy;
+
 
 namespace SnakeGame
 {
@@ -28,7 +32,7 @@ namespace SnakeGame
             {gridValue.Food, Images.Food },
             {gridValue.BadFood, Images.BadFood }
         };
-
+        private bool soundOn = true;
         private readonly Dictionary<Direction, int> dirToRotation = new()
         {
             {Direction.Up, 180 },
@@ -36,10 +40,15 @@ namespace SnakeGame
             {Direction.Left, 90 },
             {Direction.Right, 270 }
         };
-        private int speed = 200;
-        private readonly int rows = 10, cols = 20;
-        private readonly Image[,] gridImages;
 
+
+        MediaPlayer main = new MediaPlayer();
+
+
+        private int speed = 200;
+        private readonly int rows = 15, cols = 20;
+        private readonly Image[,] gridImages;
+        
         private Game game;
         private bool gameRunning;
         private int maxScore = 0;
@@ -47,18 +56,53 @@ namespace SnakeGame
         public MainWindow()
         {
             InitializeComponent();
+            Sounds.GameOver.Load();
+            main.Open(new Uri("main.wav",UriKind.Relative));
+            Sounds.Fone.Load();
+            Sounds.Fone.PlayLooping();
+            // Устанавливаем громкость
+            main.Volume = 0.5;
+
+
             inst.Visibility = Visibility.Hidden;
             GridBorder.Visibility= Visibility.Hidden;
             ScoreText.Visibility= Visibility.Hidden;
             Overlay.Visibility= Visibility.Hidden;
             easy.Click += Easy_Click;
+            exit.Click += Exit_Click;
             medium.Click += Medium_Click;
             hard.Click += Hard_Click;
             walls.Click += Walls_Click;
             close.Click += Close_Click;
+            sound.Click += Sound_Click;
             instruction.Click += Instruction_Click;
             gridImages = SetupGrid();
             game= new Game(rows, cols);
+        }
+
+        private void Sound_Click(object sender, RoutedEventArgs e)
+        {
+            soundOn = !soundOn;
+            if (soundOn)
+            {
+                soundText.Text = "Музыка вкл.";
+                
+                main.Volume = 0.5;
+                Sounds.Fone.PlayLooping();
+
+            }
+            else
+            {
+                soundText.Text = "Музыка выкл.";
+                main.Volume = 0;
+                Sounds.Fone.Stop();
+
+            }
+        }
+
+        private void Exit_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
         }
 
         private void Instruction_Click(object sender, RoutedEventArgs e)
@@ -129,7 +173,7 @@ namespace SnakeGame
 
                 if (!gameRunning)
                 {
-
+                    
                     gameRunning = true;
                     await RunGame();
                     gameRunning = false;
@@ -177,6 +221,11 @@ namespace SnakeGame
         private async Task RunGame()
         {
             Draw();
+
+
+
+            Sounds.Fone.Stop();
+            main.Play();
             await ShouCountDown();
             Overlay.Visibility= Visibility.Hidden;
             await GameLoop();
@@ -185,7 +234,8 @@ namespace SnakeGame
         }
         private async Task GameLoop()
         {
-            while(!game.IsGameOver)
+            
+            while (!game.IsGameOver)
             {
                 await Task.Delay(game.speed);
                 game.Move();
@@ -257,6 +307,7 @@ namespace SnakeGame
 
         private async Task DrawDeadSnake()
         {
+            Sounds.GameOver.Play();
             List<Pos> positions = new List<Pos>(game.SnakePos());
             for(int i = 0; i < positions.Count; i++)
             {
@@ -268,7 +319,8 @@ namespace SnakeGame
         }
         private async Task ShouCountDown()
         {
-            for(int i = 3; i>=1; i--)
+           
+            for (int i = 3; i>=1; i--)
             {
                 OverlayText.Text = i.ToString();
                 await Task.Delay(500);
@@ -277,11 +329,35 @@ namespace SnakeGame
 
         private async Task ShowGameOver()
         {
+
+
+
+            main.Stop();
+
             await DrawDeadSnake();
             await Task.Delay(1000);
+            
+            WallsOn.Text = "Стенки включены";
+            
             Greeting.Text = "Игра окончена, попробуйте еще раз!";
             Overlay.Visibility= Visibility.Visible;
             Menu.Visibility = Visibility.Visible;
+            Sounds.Fone.PlayLooping();
+            if (soundOn)
+            {
+                soundText.Text = "Музыка вкл.";
+                main.Volume = 0.5;
+                Sounds.Fone.PlayLooping();
+
+
+            }
+            else
+            {
+                soundText.Text = "Музыка выкл.";
+                main.Volume = 0;
+                Sounds.Fone.Stop();
+
+            }
             OverlayText.Text = "НАЖМИТЕ ЛЮБУЮ КНОПКУ";
         }
     }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Media;
 
 namespace SnakeGame
 {
@@ -19,16 +20,18 @@ namespace SnakeGame
         public int speedDelta;
         public bool wallsIsOn = true;
         private LinkedList<Pos> snakePosition = new LinkedList<Pos>();
-        
+       
         private readonly Random rand = new Random();
         private readonly LinkedList<Direction> dirChanges = new LinkedList<Direction>();
         public Game(int rows, int cols)
         {
+            Sounds.BadEat.Load();
+            Sounds.Eat.Load();
             Rows = rows;
             Columns = cols;
             Grid = new gridValue[rows, cols];
             Dir = Direction.Right;
-
+            
             AddSnake();
             AddFood();
             AddBadFood();
@@ -159,7 +162,7 @@ namespace SnakeGame
             }
             return Grid[newHeadPos.Row, newHeadPos.Col];
         }
-
+        
         public void Move()
         {
             
@@ -205,11 +208,8 @@ namespace SnakeGame
             }
             else if(hit == gridValue.BadFood) 
             {
-                
-                if(scoreOfBadFood >3) 
-                { 
-                    IsGameOver=true;
-                }
+
+                Sounds.BadEat.Play();
                 if (Score - 3 >= 0)
                 {
                     for (int i = 0; i < 4; i++)
@@ -245,10 +245,11 @@ namespace SnakeGame
             }
             else if (hit == gridValue.Food)
             {
+                Sounds.Eat.Play();
                 AddHead(newHeadPos);
                 Score++;
                 speed-=speedDelta;
-                if (speed < 30)
+                if (speed < 64)
                 {
                     speed += speedDelta;
                 }

@@ -15,6 +15,11 @@
     <None Remove="pictures\Empty.png" />
     <None Remove="pictures\Food.png" />
     <None Remove="pictures\Head.png" />
+    <None Remove="pictures\shrift.ttf" />
+    <None Remove="Sounds\Eat.wav" />
+    <None Remove="Sounds\GameOver.wav" />
+    <None Remove="Sounds\hit.wav" />
+    <None Remove="Sounds\main.wav" />
   </ItemGroup>
 
   <ItemGroup>
@@ -25,6 +30,13 @@
     <Resource Include="pictures\Empty.png" />
     <Resource Include="pictures\Food.png" />
     <Resource Include="pictures\Head.png" />
+    <Resource Include="pictures\shrift.ttf" />
+    <Resource Include="Sounds\Eat.wav" />
+    <Resource Include="Sounds\GameOver.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Sounds\hit.wav" />
+    <Resource Include="Sounds\main.wav" />
   </ItemGroup>
 
 </Project>
