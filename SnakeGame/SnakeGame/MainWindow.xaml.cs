@@ -215,6 +215,18 @@ namespace SnakeGame
                 case Key.Down:
                     game.ChangeDir(Direction.Down);
                     break;
+                case Key.A:
+                    game.ChangeDir(Direction.Left);
+                    break;
+                case Key.D:
+                    game.ChangeDir(Direction.Right);
+                    break;
+                case Key.W:
+                    game.ChangeDir(Direction.Up);
+                    break;
+                case Key.S:
+                    game.ChangeDir(Direction.Down);
+                    break;
             }
         }
 
