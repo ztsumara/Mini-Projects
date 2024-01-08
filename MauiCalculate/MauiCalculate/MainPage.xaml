@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiCalculate.MainPage">
+    <ContentPage.Resources>
+        <Style TargetType="Button">
+            <Setter Property="FontSize" Value="Medium" />
+        </Style>
+    </ContentPage.Resources>
+    <Grid Padding="5">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition Height="4*"/>
+
+        </Grid.RowDefinitions>
+
+        <StackLayout Grid.Row="0" Background="LightBlue">
+            <Label x:Name="laDisplay"
+           Text=""
+           FontSize="40"
+           LineBreakMode="NoWrap"
+           HorizontalTextAlignment="End"/>
+
+        </StackLayout>
+
+        <StackLayout Grid.Row="1" Background="Gray">
+            <Label x:Name="laHistory"
+                   Text=""
+                   FontSize="20"
+                   LineBreakMode="NoWrap"
+                   HorizontalTextAlignment="End"/>
+
+        </StackLayout>
+
+        <Grid Grid.Row="2"
+              RowDefinitions="*,*,*,*,*,*"
+              ColumnDefinitions="*,*,*,*"
+              RowSpacing="3"
+              ColumnSpacing="3">
+
+            <Button Text="%" Grid.Row="0" Grid.Column="0" x:Name="buProcent"/>
+            <Button Text="CE" Grid.Row="0" Grid.Column="1" x:Name="buNumCE"/>
+            <Button Text="C" Grid.Row="0" Grid.Column="2" x:Name="buNumC"/>
+            <Button Text="⌫" Grid.Row="0" Grid.Column="3" x:Name="buBackSp"/>
+
+            <Button Text="1/x" Grid.Row="1" Grid.Column="0" x:Name="buDrob"/>
+            <Button Text="Х²" Grid.Row="1" Grid.Column="1" x:Name="buPow"/>
+            <Button Text="√x" Grid.Row="1" Grid.Column="2" x:Name="buSqrt"/>
+            <Button Text="÷" Grid.Row="1" Grid.Column="3" x:Name="buDiv"/>
+            
+            <Button Text="7" Grid.Row="2" Grid.Column="0" x:Name="buNum7"/>
+            <Button Text="8" Grid.Row="2" Grid.Column="1" x:Name="buNum8"/>
+            <Button Text="9" Grid.Row="2" Grid.Column="2" x:Name="buNum9"/>
+            <Button Text="*" Grid.Row="2" Grid.Column="3" x:Name="buMul"/>
+
+            <Button Text="4" Grid.Row="3" Grid.Column="0" x:Name="buNum4"/>
+            <Button Text="5" Grid.Row="3" Grid.Column="1" x:Name="buNum5"/>
+            <Button Text="6" Grid.Row="3" Grid.Column="2" x:Name="buNum6"/>
+            <Button Text="-" Grid.Row="3" Grid.Column="3" x:Name="buSub"/>
+
+            <Button Text="1" Grid.Row="4" Grid.Column="0" x:Name="buNum1"/>
+            <Button Text="2" Grid.Row="4" Grid.Column="1" x:Name="buNum2"/>
+            <Button Text="3" Grid.Row="4" Grid.Column="2" x:Name="buNum3"/>
+            <Button Text="+" Grid.Row="4" Grid.Column="3" x:Name="buSum"/>
+
+            <Button Text="+/-" Grid.Row="5" Grid.Column="0" x:Name="ChangePlus"/>
+            <Button Text="0" Grid.Row="5" Grid.Column="1" x:Name="buNum0"/>
+            <Button Text="," Grid.Row="5" Grid.Column="2" x:Name="buDot"/>
+            <Button Text="=" Grid.Row="5" Grid.Column="3" Background="LightBlue" x:Name="buEq"/>
+
+
+        </Grid>
+
+
+
+    </Grid>
+
+</ContentPage>
